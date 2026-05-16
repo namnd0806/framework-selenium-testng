@@ -1,6 +1,6 @@
 package tests;
 
-import base.BaseTest;
+import base.UIBaseTest;
 import base.RetryAnalyzer;
 import core.report.AllureListener;
 import core.utils.AssertionUtils;
@@ -26,7 +26,7 @@ import pages.LoginPage;
 @Listeners(AllureListener.class)
 @Epic("Authentication")
 @Feature("Login")
-public class LoginTest extends BaseTest {
+public class LoginTest extends UIBaseTest {
 
     // -------------------------------------------------------------------------
     // Data Providers

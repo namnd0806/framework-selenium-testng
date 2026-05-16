@@ -25,6 +25,9 @@ logs/
 # Allure results (generated at runtime)
 allure-results/
 
+# Allure CLI (auto-downloaded by Maven plugin, ~50MB)
+.allure/
+
 # Screenshots (generated at runtime)
 screenshots/
 

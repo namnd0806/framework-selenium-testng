@@ -115,7 +115,12 @@ public abstract class BasePage {
      * @throws ElementNotFoundException if the element is not found within the timeout
      */
     protected void click(By locator) {
-        findElement(locator).click();
+        try {
+            wait.until(ExpectedConditions.elementToBeClickable(locator)).click();
+        } catch (TimeoutException e) {
+            throw new ElementNotFoundException(
+                    buildNotFoundMessage(locator, explicitWaitTimeout), e);
+        }
     }
 
     /**
@@ -166,6 +171,35 @@ public abstract class BasePage {
     protected void selectFromDropdown(By locator, String visibleText) {
         WebElement selectElement = findElement(locator);
         new Select(selectElement).selectByVisibleText(visibleText);
+    }
+
+    // -------------------------------------------------------------------------
+    // Navigation (Requirement 4.3)
+    // -------------------------------------------------------------------------
+
+    /**
+     * Navigates the browser to the given URL and waits for page load.
+     *
+     * @param url the full URL to navigate to
+     */
+    protected void navigateTo(String url) {
+        driver.get(url);
+        waitForPageLoad();
+    }
+
+    /**
+     * Opens this page using the URL configured under {@code page.url.<key>}
+     * in the active environment's properties file.
+     *
+     * <p>Subclasses call this method from their own {@code open()} by passing
+     * the config key, e.g. {@code openByKey("login")} reads {@code page.url.login}.</p>
+     *
+     * @param pageKey the page key suffix (e.g. {@code "login"} → {@code page.url.login})
+     */
+    protected void openByKey(String pageKey) {
+        String url = ConfigManager.getInstance()
+                .getString("page.url." + pageKey, ConfigManager.getInstance().getString("base.url", ""));
+        navigateTo(url);
     }
 
     // -------------------------------------------------------------------------

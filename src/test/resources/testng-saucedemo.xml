@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+
+<!--
+  SauceDemo test suite — chạy luồng mua hàng end-to-end.
+  Chạy bằng lệnh:
+    mvn test -Dsurefire.suiteXmlFiles=src/test/resources/testng-saucedemo.xml -Dbase.url=https://www.saucedemo.com
+-->
+<suite name="SauceDemo Purchase Flow Suite"
+       verbose="1">
+
+    <listeners>
+        <listener class-name="core.report.AllureListener"/>
+    </listeners>
+
+    <test name="SauceDemo E2E Tests">
+        <classes>
+            <class name="tests.saucedemo.SaucePurchaseTest"/>
+        </classes>
+    </test>
+
+</suite>
