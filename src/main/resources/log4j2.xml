@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Log4j2 Configuration — Selenium Test Framework
+    Pattern: [THREAD-%t] [%p] [%c{1}] - %m%n
+    Satisfies: Requirements 3.7, 6.5, 6.6
+-->
+<Configuration status="WARN" monitorInterval="30">
+
+    <Appenders>
+
+        <!-- Console appender — outputs to stdout -->
+        <Console name="ConsoleAppender" target="SYSTEM_OUT">
+            <PatternLayout pattern="[THREAD-%t] [%p] [%c{1}] - %m%n"/>
+        </Console>
+
+        <!-- Rolling file appender — writes to target/logs/framework.log -->
+        <RollingFile name="FileAppender"
+                     fileName="target/logs/framework.log"
+                     filePattern="target/logs/framework-%d{yyyy-MM-dd}-%i.log.gz">
+            <PatternLayout pattern="[THREAD-%t] [%p] [%c{1}] - %m%n"/>
+            <Policies>
+                <!-- Roll over daily -->
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <!-- Roll over when file exceeds 10 MB -->
+                <SizeBasedTriggeringPolicy size="10MB"/>
+            </Policies>
+            <!-- Keep at most 7 rolled files -->
+            <DefaultRolloverStrategy max="7"/>
+        </RollingFile>
+
+    </Appenders>
+
+    <Loggers>
+
+        <!-- Framework-specific loggers — DEBUG level for detailed tracing -->
+        <Logger name="core" level="DEBUG" additivity="false">
+            <AppenderRef ref="ConsoleAppender"/>
+            <AppenderRef ref="FileAppender"/>
+        </Logger>
+
+        <Logger name="base" level="DEBUG" additivity="false">
+            <AppenderRef ref="ConsoleAppender"/>
+            <AppenderRef ref="FileAppender"/>
+        </Logger>
+
+        <Logger name="utils" level="DEBUG" additivity="false">
+            <AppenderRef ref="ConsoleAppender"/>
+            <AppenderRef ref="FileAppender"/>
+        </Logger>
+
+        <!-- Suppress noisy third-party library logs -->
+        <Logger name="org.openqa.selenium" level="WARN" additivity="false">
+            <AppenderRef ref="ConsoleAppender"/>
+        </Logger>
+
+        <Logger name="io.github.bonigarcia" level="WARN" additivity="false">
+            <AppenderRef ref="ConsoleAppender"/>
+        </Logger>
+
+        <Logger name="org.apache.http" level="WARN" additivity="false">
+            <AppenderRef ref="ConsoleAppender"/>
+        </Logger>
+
+        <!-- Root logger — INFO level for everything else -->
+        <Root level="INFO">
+            <AppenderRef ref="ConsoleAppender"/>
+            <AppenderRef ref="FileAppender"/>
+        </Root>
+
+    </Loggers>
+
+</Configuration>

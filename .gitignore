@@ -1,0 +1,37 @@
+# Maven build output
+target/
+
+# IDE files
+.idea/
+*.iml
+*.iws
+*.ipr
+.classpath
+.project
+.settings/
+*.eclipse
+
+# VS Code
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Allure results (generated at runtime)
+allure-results/
+
+# Screenshots (generated at runtime)
+screenshots/
+
+# jqwik property test database
+.jqwik-database
+
+# Credentials / secrets
+*.env
+.env*
+secrets.properties

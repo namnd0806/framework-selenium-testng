@@ -1,0 +1,40 @@
+image: maven:3.9-eclipse-temurin-17
+
+variables:
+  BROWSER: "chrome"
+  HEADLESS: "true"
+  CI_MODE: "true"
+  MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
+
+# Cache Maven dependencies between pipeline runs
+cache:
+  paths:
+    - .m2/repository/
+
+stages:
+  - test
+
+test:
+  stage: test
+  before_script:
+    # Install Google Chrome for headless execution
+    - apt-get update -qq && apt-get install -y -qq wget gnupg
+    - wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add -
+    - sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
+    - apt-get update -qq && apt-get install -y -qq google-chrome-stable
+  script:
+    - mvn test
+        -Dbrowser=$BROWSER
+        -Dheadless=$HEADLESS
+        -Dci.mode=$CI_MODE
+        --no-transfer-progress
+  artifacts:
+    when: always
+    paths:
+      - target/reports/
+      - target/surefire-reports/
+    reports:
+      # Publish JUnit XML for GitLab test report integration (Requirement 6.7)
+      junit:
+        - target/surefire-reports/**/*.xml
+    expire_in: 30 days

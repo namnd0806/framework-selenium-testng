@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+
+<!--
+  Full test suite — runs all tests in parallel at method level.
+  thread-count is hardcoded to 4 because the TestNG XML is parsed before
+  Maven system properties are available to the XML parser.
+  Use -Dthread.count=N to override at runtime via ConfigManager inside tests.
+
+  Satisfies Requirements: 3.1, 3.2, 3.4, 3.5, 3.6, 6.7, 9.1
+-->
+<suite name="Selenium Test Framework — Full Suite"
+       parallel="methods"
+       thread-count="4"
+       verbose="1">
+
+    <!-- Register AllureListener for all tests in this suite -->
+    <listeners>
+        <listener class-name="core.report.AllureListener"/>
+    </listeners>
+
+    <test name="All Tests">
+        <packages>
+            <package name="tests"/>
+            <package name="dataproviders"/>
+        </packages>
+    </test>
+
+</suite>

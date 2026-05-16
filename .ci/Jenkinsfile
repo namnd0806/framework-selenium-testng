@@ -1,0 +1,78 @@
+pipeline {
+    agent any
+
+    tools {
+        jdk 'JDK-17'
+        maven 'Maven-3'
+    }
+
+    environment {
+        // Default values — override via Jenkins job parameters or credentials
+        BROWSER   = 'chrome'
+        HEADLESS  = 'true'
+        CI_MODE   = 'true'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+                echo "Checked out branch: ${env.BRANCH_NAME}"
+            }
+        }
+
+        stage('Test') {
+            steps {
+                withEnv([
+                    "BROWSER=${env.BROWSER}",
+                    "HEADLESS=${env.HEADLESS}",
+                    "CI_MODE=${env.CI_MODE}"
+                ]) {
+                    sh '''
+                        mvn test \
+                            -Dbrowser=${BROWSER} \
+                            -Dheadless=${HEADLESS} \
+                            -Dci.mode=${CI_MODE} \
+                            --no-transfer-progress
+                    '''
+                }
+            }
+            post {
+                always {
+                    // Publish JUnit XML results (Requirement 6.7)
+                    junit testResults: 'target/surefire-reports/**/*.xml',
+                          allowEmptyResults: true
+                }
+            }
+        }
+
+        stage('Publish Report') {
+            steps {
+                echo 'Publishing Allure report...'
+                // Requires the Allure Jenkins Plugin to be installed
+                allure([
+                    includeProperties: false,
+                    jdk: '',
+                    properties: [],
+                    reportBuildPolicy: 'ALWAYS',
+                    results: [[path: 'target/allure-results']]
+                ])
+            }
+        }
+    }
+
+    post {
+        always {
+            // Archive test reports as build artifacts (Requirement 9.5)
+            archiveArtifacts artifacts: 'target/reports/**/*',
+                             allowEmptyArchive: true,
+                             fingerprint: true
+        }
+        failure {
+            echo 'Build FAILED — check test reports for details.'
+        }
+        success {
+            echo 'All tests PASSED.'
+        }
+    }
+}
