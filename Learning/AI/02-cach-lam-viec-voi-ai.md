@@ -156,6 +156,21 @@ Bạn: "Nhớ cho tôi là project tôi dùng Java 17 và TestNG"
 ChatGPT: "Đã nhớ rồi" → lần sau tự áp dụng
 ```
 
+**Ví dụ thực tế dùng Memory hàng ngày:**
+```
+Lần 1 (thứ Hai):
+Bạn: "Tôi là automation tester, dùng Selenium Java + TestNG.
+      Project theo POM pattern. Nhớ điều này nhé."
+ChatGPT: Đã lưu vào memory.
+
+Lần 2 (thứ Ba, mở chat mới):
+Bạn: "Viết hàm click element"
+ChatGPT: [tự biết dùng Java, Selenium, POM — không cần nhắc lại]
+→ Viết đúng Java, đúng pattern, không hỏi lại bạn dùng gì
+```
+
+Kiểm tra và quản lý Memory: Settings → Personalization → Manage Memory.
+
 **Claude — Projects + System Prompt**
 
 Claude có **Projects** — tạo project riêng, upload tài liệu, AI nhớ trong project đó:
@@ -164,6 +179,22 @@ Tạo Project "Automation Framework"
 → Upload: coding-convention.md, pom.xml, BasePage.java
 → AI đọc hết, hiểu context project của bạn
 → Mọi câu hỏi trong project này AI đều biết context
+```
+
+**Ví dụ thực tế dùng Claude Projects hàng ngày:**
+```
+Setup 1 lần:
+1. Vào claude.ai → Projects → New Project
+2. Đặt tên: "E-commerce Automation"
+3. Upload: BasePage.java, coding-convention.md, test-data-guide.md
+4. Viết Project Instructions:
+   "Đây là automation framework dùng Selenium 4 + Java 17 + TestNG.
+    Luôn follow POM pattern. Không dùng Thread.sleep()."
+
+Dùng hàng ngày:
+Bạn: "Viết LoginPage cho trang /login"
+Claude: [tự biết convention, tự biết BasePage có gì, viết đúng ngay]
+→ Không cần paste lại convention mỗi lần
 ```
 
 **Cursor — .cursorrules / Cursor Rules**
@@ -195,6 +226,49 @@ Kiro có 2 cơ chế:
 - Waits: WebDriverWait only, no Thread.sleep()
 - Selectors priority: id > cssSelector > xpath
 - Test naming: test_[feature]_[scenario]_[expectedResult]
+```
+
+**Hướng dẫn setup Kiro Steering step-by-step:**
+
+```
+Bước 1: Tạo thư mục steering
+  → Trong project của bạn, tạo thư mục: .kiro/steering/
+
+Bước 2: Tạo file steering
+  → Tạo file: .kiro/steering/conventions.md
+  → Nội dung ví dụ:
+
+  ## Project Info
+  - Framework: Selenium 4 + Java 17 + TestNG + Maven
+  - Pattern: Page Object Model (strict)
+  - Report: Allure
+
+  ## Coding Rules
+  - KHÔNG dùng Thread.sleep() — dùng WebDriverWait
+  - Tất cả Page class phải extend BasePage
+  - Selector ưu tiên: By.id > By.cssSelector > By.xpath
+  - Test method naming: test_[feature]_[scenario]_[expected]
+
+  ## Project Structure
+  - src/main/pages/   → Page Object classes
+  - src/main/utils/   → Helper, utility classes
+  - src/test/tests/   → Test classes
+
+Bước 3: Kiro tự đọc file này
+  → Mỗi khi bạn chat với Kiro, nó tự đính kèm file steering
+  → Không cần nhắc lại convention mỗi lần
+
+Bước 4: Kiểm tra
+  → Hỏi Kiro: "Viết LoginPage"
+  → Kiro sẽ tự biết extend BasePage, dùng WebDriverWait, đúng naming
+```
+
+Có thể tạo nhiều steering file cho nhiều mục đích:
+```
+.kiro/steering/
+├── conventions.md    ← coding convention (luôn bật)
+├── project-info.md   ← thông tin project, tech stack
+└── test-strategy.md  ← chiến lược test của team
 ```
 
 *Skills* — gói kiến thức chuyên biệt, bật/tắt theo nhu cầu:

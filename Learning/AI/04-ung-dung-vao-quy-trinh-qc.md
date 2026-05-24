@@ -302,4 +302,99 @@ AI hỗ trợ tester ở **mọi giai đoạn** của STLC:
 
 ---
 
+## 4.7 AI trong Agile Testing (ATLC)
+
+**ATLC = Agile Testing Life Cycle** — quy trình test trong môi trường Agile/Scrum.
+
+Khác với STLC truyền thống (waterfall), ATLC chạy theo sprint (1-2 tuần/sprint):
+
+```
+Sprint Planning → Sprint Execution → Sprint Review → Retrospective
+     ↑                                                      |
+     └──────────────────────────────────────────────────────┘
+```
+
+### AI hỗ trợ từng giai đoạn Agile
+
+**Sprint Planning — AI ước lượng effort:**
+```
+Prompt:
+Đây là các user story trong sprint tới:
+1. US-101: Login với Google OAuth
+2. US-102: Forgot password flow
+3. US-103: Profile page edit
+
+Với mỗi story, ước lượng:
+- Số test case cần viết (manual + automation)
+- Effort (giờ) cho từng loại test
+- Risk level và lý do
+- Dependency giữa các story
+```
+
+**Daily Standup — AI tóm tắt tiến độ:**
+```
+Prompt:
+Đây là test execution report hôm nay:
+- Chạy 45 test cases
+- Pass: 38, Fail: 5, Blocked: 2
+- Fail cases: [danh sách]
+- Blocked vì: môi trường staging down
+
+Viết update ngắn gọn cho daily standup (3-4 câu).
+```
+
+**Sprint Review — AI tổng hợp kết quả:**
+```
+Prompt:
+Sprint 15 kết thúc. Dữ liệu:
+- Stories completed: 8/10
+- Test cases: 120 written, 115 executed, 108 passed
+- Bugs found: 12 (3 critical, 5 major, 4 minor)
+- Automation coverage: tăng từ 45% lên 52%
+
+Viết sprint test summary cho buổi review với stakeholder.
+Ngắn gọn, dùng số liệu, highlight risk nếu có.
+```
+
+**Retrospective — AI phân tích vấn đề:**
+```
+Prompt:
+Sprint này có các vấn đề sau:
+- 3 test bị flaky, mất 2 ngày debug
+- Requirement thay đổi giữa sprint làm 15 test case bị outdated
+- Môi trường staging không ổn định
+
+Phân tích root cause và đề xuất action items cho sprint sau.
+```
+
+### Definition of Done với AI
+
+```
+Prompt:
+Viết Definition of Done cho user story về tính năng thanh toán,
+bao gồm cả tiêu chí về testing:
+- Unit test coverage
+- Integration test
+- Automation test
+- Performance benchmark
+- Security check
+```
+
+### Shift-left Testing với AI
+
+Shift-left = test sớm hơn, không chờ đến cuối sprint:
+
+```
+Truyền thống:
+Dev code xong → Tester test → Tìm bug → Dev fix → Tester test lại
+
+Shift-left với AI:
+Có requirement → AI phân tích edge case ngay
+Dev đang code → AI review code, tìm bug sớm
+Dev commit → AI chạy test tự động
+→ Bug được tìm sớm hơn, rẻ hơn để fix
+```
+
+---
+
 **Tiếp theo:** [Phần 5 — AI cho Automation Tester & SDET](./05-ai-cho-automation-sdet.md)
