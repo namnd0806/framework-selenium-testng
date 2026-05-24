@@ -380,4 +380,123 @@ Tháng 6: Portfolio & Interview Prep
 
 ---
 
+## 5.7 AI với Playwright
+
+### Playwright là gì?
+
+Playwright là framework automation test thế hệ mới (Microsoft, 2020), thay thế dần Selenium cho web testing:
+- Hỗ trợ Chrome, Firefox, Safari trong 1 codebase
+- Nhanh hơn Selenium, ít flaky hơn
+- Hỗ trợ Java, Python, JavaScript, C#
+
+### AI viết Playwright test
+
+```
+Prompt:
+Tôi đang dùng Playwright Java.
+Viết test cho trang login tại https://example.com/login:
+- Email: #email, Password: #password, Button: .btn-login
+- Test: login thành công, login sai password, login email trống
+
+Yêu cầu:
+- Dùng Page Object Model
+- Dùng Playwright Locator API (không dùng CSS selector cũ)
+- Có assertion rõ ràng
+```
+
+### So sánh Selenium vs Playwright — AI giải thích
+
+```
+Prompt:
+Giải thích sự khác biệt giữa Selenium và Playwright cho tôi.
+Tôi đang dùng Selenium Java, muốn biết có nên chuyển sang Playwright không.
+Cho ví dụ code cùng 1 tác vụ viết bằng cả 2 framework.
+```
+
+### Chuyển đổi Selenium → Playwright với AI
+
+```
+Prompt:
+Chuyển đoạn code Selenium Java này sang Playwright Java:
+[paste code Selenium]
+
+Giữ nguyên logic test, chỉ thay đổi API calls.
+Giải thích những điểm khác biệt chính.
+```
+
+---
+
+## 5.8 AI với API Testing (RestAssured)
+
+### RestAssured là gì?
+
+RestAssured là thư viện Java để test REST API — viết API test như viết unit test.
+
+### AI viết RestAssured test từ Swagger/OpenAPI
+
+```
+Prompt:
+Đây là Swagger spec cho API login:
+POST /api/v1/auth/login
+Request body: { "email": "string", "password": "string" }
+Response 200: { "token": "string", "user": { "id": int, "name": "string" } }
+Response 401: { "error": "Invalid credentials" }
+Response 422: { "errors": [{ "field": "string", "message": "string" }] }
+
+Viết RestAssured test bao gồm:
+1. Happy path — login thành công, verify token và user info
+2. Invalid credentials — verify 401 và error message
+3. Missing fields — verify 422 và validation errors
+4. SQL injection attempt trong email field
+
+Dùng: RestAssured + TestNG + Hamcrest matchers
+```
+
+### AI tạo test từ Postman Collection
+
+```
+Prompt:
+Đây là Postman collection export (JSON):
+[paste JSON]
+
+Chuyển thành RestAssured test class với TestNG.
+Giữ nguyên tất cả request, header, body, assertion.
+```
+
+### AI debug API test
+
+```
+Prompt:
+RestAssured test của tôi bị fail:
+
+Test code:
+given()
+  .header("Authorization", "Bearer " + token)
+  .body(requestBody)
+.when()
+  .post("/api/orders")
+.then()
+  .statusCode(201);
+
+Lỗi: Expected status code 201 but was 400
+Response body: {"error": "Invalid request", "details": "..."}
+
+Phân tích nguyên nhân và cách fix.
+```
+
+### Kết hợp API test + UI test
+
+```
+Prompt:
+Viết test scenario end-to-end:
+1. Dùng RestAssured tạo user mới qua API (POST /api/users)
+2. Dùng Selenium login với user vừa tạo
+3. Verify user thấy dashboard
+4. Dùng RestAssured xóa user sau test (cleanup)
+
+Tech: RestAssured + Selenium + TestNG
+```
+
+---
+
 **Tiếp theo:** [Phần 6 — AI Nâng cao](./06-ai-nang-cao.md)
